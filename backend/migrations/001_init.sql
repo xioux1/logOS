@@ -1,12 +1,12 @@
 CREATE SCHEMA IF NOT EXISTS logos;
 
-CREATE TABLE logos.users (
+CREATE TABLE IF NOT EXISTS logos.users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   metadata JSONB DEFAULT '{}',
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE TABLE logos.federated_identities (
+CREATE TABLE IF NOT EXISTS logos.federated_identities (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   logos_user_id UUID REFERENCES logos.users(id) ON DELETE CASCADE,
   provider VARCHAR(50) NOT NULL,
@@ -15,14 +15,14 @@ CREATE TABLE logos.federated_identities (
   UNIQUE(provider, external_id)
 );
 
-CREATE TABLE logos.logs (
+CREATE TABLE IF NOT EXISTS logos.logs (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES logos.users(id) ON DELETE CASCADE,
   raw_text TEXT NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE TABLE logos.structured_entries (
+CREATE TABLE IF NOT EXISTS logos.structured_entries (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   log_id UUID REFERENCES logos.logs(id) ON DELETE CASCADE,
   type VARCHAR(50),
@@ -34,7 +34,7 @@ CREATE TABLE logos.structured_entries (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE TABLE logos.conversation_memory (
+CREATE TABLE IF NOT EXISTS logos.conversation_memory (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES logos.users(id) ON DELETE CASCADE UNIQUE,
   summary TEXT,
@@ -42,7 +42,7 @@ CREATE TABLE logos.conversation_memory (
   last_updated TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE TABLE logos.integration_events (
+CREATE TABLE IF NOT EXISTS logos.integration_events (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   entry_id UUID REFERENCES logos.structured_entries(id) ON DELETE CASCADE,
   system VARCHAR(50) NOT NULL,
