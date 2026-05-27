@@ -9,16 +9,15 @@ const integrationsRouter = require('./routes/integrations');
 
 const app = express();
 
-const allowedOrigins = [
-  process.env.PWA_ORIGIN || 'http://localhost:5173',
-  process.env.DISCRIMINADOR_ORIGIN || 'http://localhost:3000',
-];
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',').map((o) => o.trim())
+  : null;
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (e.g. curl, server-to-server)
-      if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+      if (!origin) return callback(null, true);
+      if (!allowedOrigins || allowedOrigins.includes(origin)) return callback(null, true);
       callback(new Error(`CORS: origin ${origin} not allowed`));
     },
     credentials: true,
