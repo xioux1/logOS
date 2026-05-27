@@ -52,13 +52,13 @@ export default function App() {
         <div style={styles.tokenBox}>
           <div style={styles.logo}>LogOS</div>
           <p style={styles.tokenHint}>
-            Ingresá tu JWT (del Discriminador u otro sistema federado)
+            Ingresá tu API key para conectarte
           </p>
           <form onSubmit={handleSetToken} style={styles.tokenForm}>
             <input
               value={tokenInput}
               onChange={(e) => setTokenInput(e.target.value)}
-              placeholder="Bearer token..."
+              placeholder="API key..."
               style={styles.tokenInput}
               type="password"
               autoFocus
