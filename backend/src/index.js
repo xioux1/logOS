@@ -32,9 +32,18 @@ app.use('/api/logs', authMiddleware, logsRouter);
 app.use('/api/memory', authMiddleware, memoryRouter);
 app.use('/api/integrations', authMiddleware, integrationsRouter);
 
+const { runMigrations } = require('./config/db');
+
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`LogOS backend running on port ${PORT}`);
-});
+runMigrations()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`LogOS backend running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Migration failed, aborting startup:', err);
+    process.exit(1);
+  });
 
 module.exports = app;
