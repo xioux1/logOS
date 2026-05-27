@@ -1,0 +1,8 @@
+{
+  "name": "logos",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "npm install --prefix pwa && npm run build --prefix pwa && npm install --prefix backend",
+    "start": "node backend/src/index.js"
+  }
+}
