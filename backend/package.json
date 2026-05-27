@@ -4,6 +4,7 @@
   "description": "LogOS backend — intelligent logging microservice",
   "main": "src/index.js",
   "scripts": {
+    "build": "cd ../pwa && npm install && npm run build",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "migrate": "node -e \"require('./src/config/db').runMigrations()\""

@@ -32,6 +32,11 @@ app.use('/api/logs', authMiddleware, logsRouter);
 app.use('/api/memory', authMiddleware, memoryRouter);
 app.use('/api/integrations', authMiddleware, integrationsRouter);
 
+const path = require('path');
+const PWA_DIST = path.join(__dirname, '../../pwa/dist');
+app.use(express.static(PWA_DIST));
+app.get('*', (_req, res) => res.sendFile(path.join(PWA_DIST, 'index.html')));
+
 const { runMigrations } = require('./config/db');
 
 const PORT = process.env.PORT || 3001;
