@@ -33,9 +33,15 @@ app.use('/api/memory', authMiddleware, memoryRouter);
 app.use('/api/integrations', authMiddleware, integrationsRouter);
 
 const path = require('path');
+const fs = require('fs');
 const PWA_DIST = path.join(__dirname, '../../pwa/dist');
-app.use(express.static(PWA_DIST));
-app.get('*', (_req, res) => res.sendFile(path.join(PWA_DIST, 'index.html')));
+if (fs.existsSync(PWA_DIST)) {
+  app.use(express.static(PWA_DIST));
+  app.get('*', (_req, res) => res.sendFile(path.join(PWA_DIST, 'index.html')));
+} else {
+  console.warn('PWA dist not found — run the build command first');
+  app.get('*', (_req, res) => res.status(503).send('Frontend not built'));
+}
 
 const { runMigrations } = require('./config/db');
 
