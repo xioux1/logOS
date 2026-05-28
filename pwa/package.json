@@ -5,14 +5,23 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sync": "npm run build && npx cap sync android",
+    "android:build": "npm run sync && cd android && ./gradlew assembleDebug",
+    "android:release": "npm run sync && cd android && ./gradlew assembleRelease",
+    "android:open": "npx cap open android",
+    "assets:generate": "npx capacitor-assets generate"
   },
   "dependencies": {
+    "@capacitor/android": "^8.3.4",
+    "@capacitor/core": "^8.3.4",
     "axios": "^1.7.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^8.3.4",
     "@vitejs/plugin-react": "^4.3.1",
     "vite": "^5.4.0",
     "vite-plugin-pwa": "^0.20.5"
